@@ -6,3 +6,7 @@ This repository focuses on training Polynomial Neural Networks (or PNNs) in mult
 
 ## ResNet20
 
+
+## Sources
+
+https://arxiv.org/pdf/2508.11575
