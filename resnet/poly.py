@@ -1,21 +1,3 @@
-# Define a Custom Polynomial Activation Function
-# coefficients : A 1d PyTorch Tensor c = [c_0,c_1,c_2,...c_n]  representing polynomial coefficients: c_0*x^n + c_1*x^{n-1} + ... + c_{n-1}*x + c_n
-# learnable : Boolean Variable to indicate whether the initialized coefficients should be learned during training, Default: True
-class Polynomial(nn.Module):
-    def __init__(self, coefficients, learnable=True) -> None:
-        super().__init__() 
-        self.degree = coefficients.shape[0] - 1
-        self.coefficients = coefficients
-        # Make the coefficients Parameters if True
-        if learnable:
-            self.coefficients = nn.Parameter(coefficients, requires_grad=True)
-    # Use Horner's Method to evaluate the polynomial at a given point
-    def forward(self, x):
-        res = torch.zeros_like(x)
-        for i in range(self.degree + 1):
-            res = res * x + self.coefficients[i]
-        return res
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -32,7 +14,7 @@ class Polynomial(nn.Module):
         if learnable:
             self.coefficients = nn.Parameter(coefficients, requires_grad=True)
         else:
-            self.register_buffer("coefficients", coefficients)
+            self.register_buffer("poly_coefficients", coefficients)
     # Use Horner's Method to evaluate the polynomial at a given point
     def forward(self, x):
         res = torch.zeros_like(x)
@@ -62,23 +44,25 @@ class ResidualBlock(nn.Module):
         self.residual_conv = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=reduce_stride)
         # polynomial activation
         self.poly_activation = Polynomial(coefficients, learnable=learnable)
+        self.poly_activation2 = Polynomial(coefficients, learnable=learnable)
+        #self.relu = nn.ReLU()
 
     def forward(self, x):
         out = self.conv_l1(x)
         out = self.poly_activation(out)
+        #out = self.relu(out)
         out = self.conv_l2(out)
         # Residual connection, i.e. x = F(x) + x
         residual = self.residual_conv(x)
         out = out + residual
-        out = self.poly_activation(out)
+        out = self.poly_activation2(out)
+        #out = self.relu(out)
         return out
 
 # Implements the ResNet20 architecture as described by https://www.researchgate.net/figure/ResNet-20-architecture_fig3_351046093
 # input_dim : Size of the input dimensions : input = (width * height)
-# num_classes : The number of classes used  (classification labels)
-# in_channels : The number of input channels used,        Default=3
-# coefficients : List of Polynomial Coefficients used,    Default=[1.0, 0.0, 0.0]  (representing x^2)
-# learnable : Boolean to indicate if the coefficients should be learned during training,        Default=True 
+# num_classes : The number of classes used 
+# 
 class ResNet20(nn.Module):
     def __init__(self, input_dim, num_classes, in_channels=3, coefficients=torch.tensor([1.0, 0.0, 0.0]), learnable=True) -> None:
         super().__init__()
