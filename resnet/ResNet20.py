@@ -26,10 +26,10 @@ class BasicBlock(nn.Module):
 
 # ResNet20 architecture
 class ResNet20(nn.Module):
-    def __init__(self, num_classes=10):
+    def __init__(self, num_classes=10, input_channels=3):
         super().__init__()
         self.in_channels = 16
-        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(input_channels, 16, kernel_size=3, stride=1, padding=1)
         self.bn1 = nn.BatchNorm2d(16)
         self.layer1 = nn.Sequential(
             BasicBlock(16, 16, stride=1),
