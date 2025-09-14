@@ -50,19 +50,19 @@ class ResNet20(nn.Module):
             self.polynomial = Polynomial(ctensor)    
         
         self.layer1 = nn.Sequential(
-            BasicBlock(16, 16, stride=1),
-            BasicBlock(16, 16, stride=1),
-            BasicBlock(16, 16, stride=1)
+            BasicPolyBlock(16, 16, stride=1),
+            BasicPolyBlock(16, 16, stride=1),
+            BasicPolyBlock(16, 16, stride=1)
         )
         self.layer2 = nn.Sequential(
-            BasicBlock(16, 32, stride=2),
-            BasicBlock(32, 32, stride=1),
-            BasicBlock(32, 32, stride=1)
+            BasicPolyBlock(16, 32, stride=2),
+            BasicPolyBlock(32, 32, stride=1),
+            BasicPolyBlock(32, 32, stride=1)
         )
         self.layer3 = nn.Sequential(
-            BasicBlock(32, 64, stride=2),
-            BasicBlock(64, 64, stride=1),
-            BasicBlock(64, 64, stride=1)
+            BasicPolyBlock(32, 64, stride=2),
+            BasicPolyBlock(64, 64, stride=1),
+            BasicPolyBlock(64, 64, stride=1)
         )
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(64, num_classes)
