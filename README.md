@@ -25,7 +25,7 @@ The choice of activation function in the MLP architecture is a central focus of 
 
 ## Loss Functions
 
-Cross Entropy Loss is the primary loss function used in our Experiment, though we also experiment with MSE (which can be used to create more polynomial-friendly models) in some cases.
+We utilize Cross-Entropy Loss as the Loss Function we intend to minimize for our experiments. 
 
 ## Initializations
 
@@ -50,13 +50,13 @@ We include a 10th run with using (fixed) ReLU.
 
 ## Optimization
 
-In each run, we use Stochastic Gradient Descent (SGD) + Cosine Annealing with the following extra/hyper parameters:
+In each run, we use Stochastic Gradient Descent (SGD) + Cosine Annealing with the following extra/hyper parameters:  
 
-Batch Size: 128 
-Initial Learning Rate: 0.1
-Number of Epochs: 30
-Momentum: 0.9
-Weight decay: 1e-4
+Batch Size: 128  
+Initial Learning Rate: 0.1  
+Number of Epochs: 30  
+Momentum: 0.9  
+Weight decay: 1e-4  
 
 ## Miscellaneous
 
