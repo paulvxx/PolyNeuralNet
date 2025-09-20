@@ -68,7 +68,7 @@ As the experiments are extended to deeper architectures, gradient clipping is tr
 
 ## Experiment
 
-We repeat each experiment with 12 i.i.d randomly seeds. For every setting, we report the mean accuracy along with confidence intervals, providing an estimate of the true expected performance. 
+We repeat each experiment with 20 i.i.d randomly seeds. For every setting, we report the mean accuracy along with confidence intervals, providing an estimate of the true expected performance. 
 
 Deliverables:
 
