@@ -18,9 +18,9 @@ For Shallow Neural Networks, we use the following architecture:
 
 The choice of activation function in the MLP architecture is a central focus of this study. In our case, we compare four different activations:
 
-- Quadratic : $f(x) = c_2*x^2 + c_1*x + c_0$
-- Cubic : $f(x) = c_3*x^3 + c_2*x^2 + c_1*x + c_0$
-- Quartic : $f(x) = c_4*x^4 + c_3*x^3 + c_2*x^2 + c_1*x+ c_0$
+- Quadratic : $f(x) = ax^2 + bx + c$
+- Cubic : $f(x) = ax^3 + bx^2 + cx + d$
+- Quartic : $f(x) = ax^4 + bx^3 + cx^2 + dx + e$
 - ReLU: $f(x) = \max(0,x)$   [used for benchmark comparisons only]
 
 ## Loss Functions
