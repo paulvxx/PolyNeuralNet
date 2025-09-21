@@ -21,29 +21,26 @@ class Polynomial(nn.Module):
             res = res * x + self.coefficients[i]
         return res
 
-# A custom Class to Implement the Polynomial-Activation MLP
-# activation : A keyword (either 'relu' or 'poly') to specify whether the ReLU activation or the Polynomial Activation should be used,  Default:'relu'
-# coefficients : same as Polynomial()
-# learnable : same as Polynomial()
+
 class CustomPolyMLP(nn.Module):
     def __init__(self, act='relu', scale=1.0, coefficients=None, learnable=True):
         super().__init__() 
         self.activation = nn.ReLU()
         self.activation2 = nn.ReLU()
         self.fc1 = nn.Linear(784, 512)
-        torch.nn.init.xavier_uniform_(self.fc1.weight, gain=scale)
         self.fc2 = nn.Linear(512, 512)
-        torch.nn.init.xavier_uniform_(self.fc2.weight, gain=scale)
         self.fc3 = nn.Linear(512, 10)
-        torch.nn.init.xavier_uniform_(self.fc3.weight, gain=scale)
         if act=='poly':
             self.activation = Polynomial(coefficients=coefficients, learnable=learnable)
             self.activation2 = Polynomial(coefficients=coefficients, learnable=learnable)
+            torch.nn.init.xavier_uniform_(self.fc1.weight, gain=scale)
+            torch.nn.init.xavier_uniform_(self.fc2.weight, gain=scale)
+            torch.nn.init.xavier_uniform_(self.fc3.weight, gain=scale)
 
     def forward(self, x):
         out = self.fc1(x)
-        out = self.activation(x)
-        out = self.fc2(x)
-        out = self.activation2(x)
-        out = self.fc3(x)
+        out = self.activation(out)
+        out = self.fc2(out)
+        out = self.activation2(out)
+        out = self.fc3(out)
         return out
