@@ -28,7 +28,7 @@ def load_dataset(batch_size, augmentation=False, shuffle=False):
   return train_dataloader, test_dataloader
 
 
-def train_loop(dataloader, model, loss_fn, optimizer, log_every_n_batches=100):
+def train_loop(dataloader, model, loss_fn, optimizer, log_every_n_batches=100, grad_clipping=False):
     # Number of dataset elements
     model.train()
     size = len(dataloader.dataset)
@@ -39,6 +39,8 @@ def train_loop(dataloader, model, loss_fn, optimizer, log_every_n_batches=100):
         loss = loss_fn(pred, y)
         optimizer.zero_grad()
         loss.backward()
+        if grad_clipping:
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
         # Log Training Results every number of batches
         if batch % log_every_n_batches == 0:
@@ -63,7 +65,7 @@ def accuracy(dataloader, model, loss_fn):
     return correct, test_loss
 
 
-def run_train_model(model, batch_size=128, init_learning_rate=0.1, epochs=30, momentum=0.9, augmentation=False, shuffle=False, log_every_n_batches=100):        
+def run_train_model(model, batch_size=128, init_learning_rate=0.1, epochs=30, momentum=0.9, augmentation=False, shuffle=False, grad_clipping=False, log_every_n_batches=100):        
     # Define Loss Function Use (Cross-Entropy Loss)
     test_accuracies = []
     train_accuracies = []
@@ -75,11 +77,10 @@ def run_train_model(model, batch_size=128, init_learning_rate=0.1, epochs=30, mo
     train_set, test_set = load_dataset(batch_size, augmentation=augmentation, shuffle=shuffle)
     for e in range(epochs):
         print(f"Epoch {e+1}/{epochs}\n-------------------------------")
-        train_loop(train_set, model, loss_fn, optimizer, log_every_n_batches=log_every_n_batches)
+        train_loop(train_set, model, loss_fn, optimizer, log_every_n_batches=log_every_n_batches, grad_clipping=grad_clipping)
         train_acc, train_loss = accuracy(train_set, model, loss_fn)
         test_acc, test_loss = accuracy(test_set, model, loss_fn)
         train_accuracies.append(train_acc)
         test_accuracies.append(test_acc)
         lr_scheduler.step()
     return train_accuracies, test_accuracies
-
