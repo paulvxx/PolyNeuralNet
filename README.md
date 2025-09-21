@@ -36,15 +36,15 @@ For experimentation, we use a total of 9 different runs involving degree/α pair
 
 | Degree | α    |
 |--------|------|
-| 2      | 0.90 |
+| 2      | 0.75 |
 | 2      | 1.00 |
-| 2      | 1.10 |
-| 3      | 0.90 |
+| 2      | 1.25 |
+| 3      | 0.75 |
 | 3      | 1.00 |
-| 3      | 1.10 |
-| 4      | 0.90 |
+| 3      | 1.25 |
+| 4      | 0.75 |
 | 4      | 1.00 |
-| 4      | 1.10 |
+| 4      | 1.25 |
 
 We include a 10th run with using (fixed) ReLU. 
 
