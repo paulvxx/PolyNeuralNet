@@ -46,7 +46,7 @@ For experimentation, we use a total of 9 different runs involving degree/α pair
 | 4      | 1.00 |
 | 4      | 1.25 |
 
-We include a 10th run with using (fixed) ReLU. 
+We include a 10th and 11th run using ReLU with and without gradient clipping.
 
 ## Optimization
 
@@ -60,21 +60,29 @@ Weight decay: 1e-4
 
 ## Miscellaneous
 
-To control the risk of exploding gradients—particularly when using higher-degree polynomial activations—and to ensure fair comparison with ReLU baselines, we apply gradient clipping with a maximum norm of 1.0 when necessary.
-
-Given the shallow nature of the MLP architecture, we additionally report whether and when training instabilities (e.g., NaNs) occur without clipping. This allows us to provide direct comparisons of mean accuracies with and without gradient clipping.
-
-As the experiments are extended to deeper architectures, gradient clipping is treated as a standard component of the training setup, even for lower-degree polynomials. Nevertheless, we note that higher-degree polynomials may still exhibit occasional instabilities despite clipping.
+To control the risk of exploding gradients—particularly when using higher-degree polynomial activations, gradient clipping was a necessary measure to implement. In any particular case, without gradient clipping, loss values and weights would eventually become Inf or NaN. 
 
 ## Experiment
 
-We repeat each experiment with 20 i.i.d randomly seeds. For every setting, we report the mean accuracy along with confidence intervals, providing an estimate of the true expected performance. 
+We repeat each experiment with 12 i.i.d randomly seeds. For every setting, we report the mean accuracy across all 12 trials at the last Epoch.
 
-Deliverables:
 
-[3x3 Table with Degree / α, reporting the 9 different setups]
-[Result for ReLU Mean Accuracy]
+| D / α  |  0.75  |  1.00  |  1.25  |
+|--------|--------|--------|--------|
+| 2      |        |        |        |
+| 3      |        |        |        |
+| 4      |        |        |        |
+
+Additionally, the baseline ReLU accuracies are as follows:
+
+ReLU with no grad : 
+ReLU with grad    : 
+
 [Graphs showing the per-epoch accuracy of all 9 runs]. We only need to store per-trial: (Epoch, Mean Accuracy).  3 graphs should be included, one for each alpha parameter. In the graphs, we should have exactly four plots (Degree 2, 3, 4, and ReLU).
+
+## Summary 
+
+We found that in this preliminary experiment, the initial α value of the learnable activation function did not have a huge impact on the overall accuracy of the model. On the other hand, while the degrees all had comparable impact, higher degrees like 3 and 4 took longer to converge to an optimal value than degree 2. Degree 4 tends to have slightly higher accuracy than degrees 2 or 3.
 
 ## Sources
 
